@@ -91,7 +91,7 @@ These agents run in parallel using ThreadPoolExecutor to improve efficiency.
 
 ### Output Report
 
-![Output Report](screenshots/output_report.png)
+![Output Report](Outputreport.png)
 
 ---
 
