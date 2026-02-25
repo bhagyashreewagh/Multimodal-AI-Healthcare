@@ -87,7 +87,7 @@ These agents run in parallel using ThreadPoolExecutor to improve efficiency.
 
 ### Home Screen
 
-![Home Screen](screenshots/home_screen.png)
+![Home Screen](Homescreen.png)
 
 ### Output Report
 
