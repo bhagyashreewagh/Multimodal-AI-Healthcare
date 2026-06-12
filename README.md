@@ -4,9 +4,24 @@ Upload a PDF medical report and get parallel analysis from six specialist AI age
 
 ---
 
+## Quick Start
+
+```bash
+pip install -r requirements.txt
+
+export OPENAI_API_KEY=your_key_here
+streamlit run app.py
+```
+
+Open http://localhost:8501, upload a PDF, and click **Run Diagnosis**.
+
+A sample report is included: `sample_report_1.pdf`
+
+---
+
 ## What it does
 
-Most medical reports are written for one specialist at a time. This system runs six specialist agents in parallel against the same report and combines their findings — surfacing cross-domain patterns that a single-specialist analysis would miss.
+Most medical reports are written for one specialist at a time. This system runs six specialist agents in parallel against the same report and combines their findings, surfacing cross-domain patterns that a single-specialist analysis would miss.
 
 **Upload a PDF. Get a multidisciplinary diagnosis in under a minute.**
 
@@ -27,18 +42,26 @@ All six run simultaneously via `ThreadPoolExecutor`. A final **Multidisciplinary
 
 ---
 
-## Running the App
+## How it works
 
-```bash
-pip install -r requirements.txt
-
-export OPENAI_API_KEY=your_key_here
-streamlit run app.py
 ```
-
-Open http://localhost:8501, upload a PDF, and click **Run Diagnosis**.
-
-A sample report is included: `sample_report_1.pdf`
+PDF upload
+    |
+    v
+PyMuPDF extracts text
+    |
+    | (sent to all 6 agents at the same time)
+    v
+Cardiologist  Psychologist  Pulmonologist  Neurologist  Endocrinologist  Immunologist
+    |               |              |             |               |              |
+    +---------------+--------------+-------------+---------------+--------------+
+                                        |
+                                        v
+                         Multidisciplinary Synthesis Agent
+                                        |
+                                        v
+                         Final diagnosis report + download
+```
 
 ---
 
@@ -51,30 +74,6 @@ requirements.txt
 sample_report_1.pdf       Sample medical report for testing
 Homescreen.png            UI screenshot
 Outputreport.png          Output screenshot
-```
-
----
-
-## Architecture
-
-```
-PDF Upload
-    |
-    v
-PyMuPDF text extraction
-    |
-    v (passed to all agents simultaneously)
-+--------+  +--------+  +--------+  +--------+  +--------+  +--------+
-| Cardio |  | Psych  |  | Pulmo  |  | Neuro  |  | Endo   |  | Immuno |
-+--------+  +--------+  +--------+  +--------+  +--------+  +--------+
-         \       |           |           |          |        /
-          +------+-----------+-----------+----------+-------+
-                                    |
-                                    v
-                     Multidisciplinary Synthesis Agent
-                                    |
-                                    v
-                        Final Diagnosis + Download
 ```
 
 ---
