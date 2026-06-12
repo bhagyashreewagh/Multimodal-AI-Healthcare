@@ -1,110 +1,94 @@
-# Multimodal AI Agent for Automated Medical Report Analysis
+# Multimodal AI Healthcare
 
-## Project Overview
-
-This project leverages Multimodal AI Agents to analyze medical reports from multiple specialist perspectives, including:
-
-- Cardiology  
-- Psychology  
-- Pulmonology  
-- Neurology  
-- Endocrinology  
-- Immunology  
-
-Using LangChain, OpenAI GPT models, and PyMuPDF, the system extracts insights from a PDF medical report, processes it through multiple AI-powered agents, and generates a comprehensive multidisciplinary diagnosis.
+Upload a PDF medical report and get parallel analysis from six specialist AI agents. A final Multidisciplinary Agent synthesizes all outputs into a unified diagnosis.
 
 ---
 
-## Features
+## What it does
 
-- Multimodal AI Agents for different medical specialties  
-- Automated PDF medical report extraction using PyMuPDF  
-- Parallel processing of multiple AI agents using ThreadPoolExecutor  
-- Final diagnosis generation by a Multidisciplinary AI Agent  
-- Structured output storage for easy reference  
+Most medical reports are written for one specialist at a time. This system runs six specialist agents in parallel against the same report and combines their findings — surfacing cross-domain patterns that a single-specialist analysis would miss.
+
+**Upload a PDF. Get a multidisciplinary diagnosis in under a minute.**
+
+---
+
+## Specialist Agents
+
+| Agent | Focus |
+|---|---|
+| Cardiologist | ECG, blood tests, cardiac risk factors, arrhythmias |
+| Psychologist | Mental health indicators, anxiety, depression, trauma |
+| Pulmonologist | Respiratory function, asthma, COPD, lung infections |
+| Neurologist | CT/MRI findings, neurological disorders, cognitive markers |
+| Endocrinologist | Thyroid, insulin, cortisol, metabolic disorders |
+| Immunologist | Autoimmunity, allergies, immunodeficiencies |
+
+All six run simultaneously via `ThreadPoolExecutor`. A final **Multidisciplinary Agent** aggregates their outputs and identifies the 3 most likely health issues with reasoning.
+
+---
+
+## Running the App
+
+```bash
+pip install -r requirements.txt
+
+export OPENAI_API_KEY=your_key_here
+streamlit run app.py
+```
+
+Open http://localhost:8501, upload a PDF, and click **Run Diagnosis**.
+
+A sample report is included: `sample_report_1.pdf`
+
+---
+
+## Repo Structure
+
+```
+app.py                    Streamlit UI (upload, parallel agents, synthesis, download)
+Codefile_GitHub.ipynb     Original notebook with agent definitions
+requirements.txt
+sample_report_1.pdf       Sample medical report for testing
+Homescreen.png            UI screenshot
+Outputreport.png          Output screenshot
+```
+
+---
+
+## Architecture
+
+```
+PDF Upload
+    |
+    v
+PyMuPDF text extraction
+    |
+    v (passed to all agents simultaneously)
++--------+  +--------+  +--------+  +--------+  +--------+  +--------+
+| Cardio |  | Psych  |  | Pulmo  |  | Neuro  |  | Endo   |  | Immuno |
++--------+  +--------+  +--------+  +--------+  +--------+  +--------+
+         \       |           |           |          |        /
+          +------+-----------+-----------+----------+-------+
+                                    |
+                                    v
+                     Multidisciplinary Synthesis Agent
+                                    |
+                                    v
+                        Final Diagnosis + Download
+```
 
 ---
 
 ## Tech Stack
 
-- Python (core logic and parallel processing)  
-- LangChain (AI agent orchestration)  
-- OpenAI GPT-3.5 Turbo (AI-powered diagnosis)  
-- PyMuPDF (fitz) (PDF text extraction)  
-- ThreadPoolExecutor (concurrent agent execution)  
-- JSON and File Handling (structured result storage)  
-
----
-
-## System Architecture
-
-### 1. PDF Extraction Module
-- Reads and parses medical report PDFs  
-- Extracts structured text using PyMuPDF  
-
-### 2. Specialist AI Agents
-Each agent is responsible for analyzing the report from a specific domain perspective:
-- Cardiology Agent  
-- Psychology Agent  
-- Pulmonology Agent  
-- Neurology Agent  
-- Endocrinology Agent  
-- Immunology Agent  
-
-These agents run in parallel using ThreadPoolExecutor to improve efficiency.
-
-### 3. Multidisciplinary Diagnosis Agent
-- Aggregates all specialist insights  
-- Synthesizes findings into a comprehensive diagnosis  
-- Produces structured output  
-
-### 4. Output Storage
-- Saves final diagnosis as a structured text or JSON file  
-- Enables easy review and traceability  
-
----
-
-## How It Works
-
-1. Extract Text from PDF  
-   The system reads a medical report from a PDF file.
-
-2. Run AI Agents  
-   Each specialist agent analyzes the report according to its domain knowledge.
-
-3. Generate Specialist Insights  
-   Each agent produces structured findings and observations.
-
-4. Multidisciplinary Analysis  
-   A final AI agent synthesizes all specialist outputs into a unified diagnosis.
-
-5. Store the Output  
-   The final diagnosis is saved as a text file for further review.
-
----
-
-## Streamlit UI
-
-### Home Screen
-
-![Home Screen](Homescreen.png)
-
-### Output Report
-
-![Output Report](Outputreport.png)
-
----
-
-## Future Improvements
-
-- Integration with electronic health record (EHR) systems  
-- Support for multimodal inputs such as medical images and lab reports  
-- Fine-tuning domain-specific medical language models  
-- Deployment as a secure web-based healthcare application  
-- Enhanced explainability for clinical transparency  
+- Python
+- Streamlit (UI)
+- LangChain + OpenAI GPT-3.5 Turbo (agent orchestration)
+- PyMuPDF / fitz (PDF extraction)
+- ThreadPoolExecutor (parallel agent execution)
 
 ---
 
 ## Disclaimer
 
-This system is intended for research and educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.
+This system is for research and educational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment.
